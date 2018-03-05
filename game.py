@@ -1,4 +1,7 @@
 class Weapon:
+    def __init__(self):
+        raise NotImplementedError("Do not create raw Weapon objects.")
+
     def __str__(self):
         return self.name
 
@@ -27,7 +30,7 @@ class RustySword(Weapon):
 
 
 def play():
-    inventory = [Dagger(),'Gold(5)','Crusty Bread']
+    inventory = [Rock(), Dagger(), 'Gold(5)', 'Crusty Bread']
     print("Escape from Cave Terror!")
     while True:
         action_input = get_player_command()
@@ -43,6 +46,8 @@ def play():
             print("Inventory:")
             for item in inventory:
                 print('* ' + str(item))
+            best_weapon = most_powerful_weapon(inventory)
+            print("Your best weapon is your {}".format(best_weapon))
         else:
             print("Invalid action!")
 
@@ -50,5 +55,18 @@ def play():
 def get_player_command():
     return input('Action: ')
 
+
+def most_powerful_weapon(inventory):
+    max_damage = 0
+    best_weapon = None
+    for item in inventory:
+        try:
+            if item.damage > max_damage:
+                best_weapon = item
+                max_damage = item.damage
+        except AttributeError:
+            pass
+
+    return best_weapon
 
 play()
