@@ -1,29 +1,30 @@
-import items
+from player import Player
+import world
 
 
-class Player:
-    def __init__(self):
-        self.inventory = [items.Rock(),
-                          items.Dagger(),
-                          'Gold(5)',
-                          'Crusty Bread']
+def play():
+    print("Escape from Cave Terror!")
+    player = Player()
+    while True:
+        room = world.tile_at(player.x, player.y)
+        print(room.intro_text())
+        action_input = get_player_command()
+        if action_input in ['n', 'N']:
+            player.move_north()
+        elif action_input in ['s', 'S']:
+            player.move_south()
+        elif action_input in ['e', 'E']:
+            player.move_east()
+        elif action_input in ['w', 'W']:
+            player.move_west()
+        elif action_input in ['i', 'I']:
+            player.print_inventory()
+        else:
+            print("Invalid action!")
 
-    def print_inventory(self):
-        print("Inventory:")
-        for item in self.inventory:
-            print('* ' + str(item))
-        best_weapon = self.most_powerful_weapon()
-        print("Your best weapon is your {}".format(best_weapon))
 
-    def most_powerful_weapon(self):
-        max_damage = 0
-        best_weapon = None
-        for item in self.inventory:
-            try:
-                if item.damage > max_damage:
-                    best_weapon = item
-                    max_damage = item.damage
-            except AttributeError:
-                pass
+def get_player_command():
+    return input('Action: ')
 
-        return best_weapon
+
+play()
